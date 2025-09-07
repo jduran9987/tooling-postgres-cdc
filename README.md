@@ -1,4 +1,4 @@
-# Tooling Postgres CDC
+# Tooling - Postgres CDC
 
 This application helps automate data operations against a Postgres database.  
 The goal is to support local data engineering projects by providing a data source that can be easily populated and manipulated.
@@ -157,6 +157,33 @@ tests/
 docker-compose.yaml   # Local Postgres service
 .env                  # Environment config for DB connection
 pyproject.toml        # Project metadata and dependencies
+```
+
+---
+
+## Orders Table Schema
+
+The application manages a single table called **`orders`**.  
+Below is the schema, along with descriptions and whether each field can change when rows are updated.
+
+| Column               | Type    | Description                                                           | Changes on Update?                            |
+| -------------------- | ------- | --------------------------------------------------------------------- | --------------------------------------------- |
+| `id`                 | TEXT    | Primary key, unique identifier (UUID).                                | ❌ No                                         |
+| `status`             | TEXT    | Order status (`pending`, `paid`, `shipped`, `cancelled`, `refunded`). | ✅ Yes (new status chosen randomly on update) |
+| `total_amount_cents` | INTEGER | Order amount in cents.                                                | ❌ No                                         |
+| `created_at`         | BIGINT  | Epoch timestamp (ms) when the row was created.                        | ❌ No                                         |
+| `last_updated_at`    | BIGINT  | Epoch timestamp (ms) when the row was last updated.                   | ✅ Yes (set to current time on update)        |
+
+### SQL Definition
+
+```sql
+CREATE TABLE IF NOT EXISTS orders (
+    id                 TEXT    PRIMARY KEY,
+    status             TEXT    NOT NULL,
+    total_amount_cents INTEGER NOT NULL,
+    created_at         BIGINT  NOT NULL,
+    last_updated_at    BIGINT  NOT NULL
+);
 ```
 
 ---
