@@ -31,7 +31,7 @@ jobs:
       - name: Install The Project
         run: uv sync --locked --all-extras --dev
 
-      - name: Run task
+      - name: Run Task
         run: |
           if [ "${{ matrix.task }}" = "tests" ]; then
             uv run pytest tests/ -vv
