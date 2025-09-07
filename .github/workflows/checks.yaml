@@ -28,13 +28,13 @@ jobs:
         with:
           version: "0.6.10"
 
-      - name: Install the project
+      - name: Install The Project
         run: uv sync --locked --all-extras --dev
 
       - name: Run task
         run: |
           if [ "${{ matrix.task }}" = "tests" ]; then
-            uv run pytest tests -vv
+            uv run pytest tests/ -vv
           elif [ "${{ matrix.task }}" = "lint" ]; then
             uv run ruff check
           else
